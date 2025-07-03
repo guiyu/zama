@@ -69,7 +69,11 @@ class SepoliaTokenClaimer:
         ttk.Button(wallet_frame, text="验证私钥", command=self.validate_private_key).grid(row=2, column=1, sticky=tk.W, pady=2)
         
         # 绑定私钥变化事件
-        self.private_key.trace('w', self.update_wallet_address)
+        try:
+            self.private_key.trace_add('write', self.update_wallet_address)
+        except AttributeError:
+            # 兼容旧版 Python
+            self.private_key.trace('w', self.update_wallet_address)
         
         # 交易配置区域
         tx_frame = ttk.LabelFrame(main_frame, text="交易配置", padding="10")
